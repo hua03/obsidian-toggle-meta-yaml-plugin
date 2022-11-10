@@ -3,7 +3,7 @@ import { hideMetaYaml, isHideMetaYaml, showMetaYaml } from "./utils";
 
 export default class ToggleMetaYaml extends Plugin {
 	async onload() {
-		console.log(`load MetaEditor`);
+		console.log(`load ToggleMetaYaml`);
 
 		this.addCommand({
 			id: "obsidian-toggle-meta-yaml",
