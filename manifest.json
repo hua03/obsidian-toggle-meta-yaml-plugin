@@ -1,6 +1,6 @@
 {
 	"id": "obsidian-toggle-meta-yaml-plugin",
-	"name": "toggle-meta-yaml",
+	"name": "Toggle Meta Yaml",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "this is a simple plugin to toggle meta yaml.",
