@@ -1,4 +1,4 @@
-const hideMetaClassName = "meta-editor-hide-meta-yaml";
+const hideMetaClassName = "toggle-meta-yaml--hide";
 
 export function isHideMetaYaml() {
 	return document.body.classList.contains(hideMetaClassName);
@@ -9,5 +9,5 @@ export function showMetaYaml() {
 }
 
 export function hideMetaYaml() {
-	document.body.classList.remove(hideMetaClassName);
+	document.body.classList.add(hideMetaClassName);
 }

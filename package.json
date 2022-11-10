@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-metadata-editor-plugin",
+	"name": "obsidian-toggle-meta-yaml-plugin",
 	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"description": "This is a simple plugin to toggle meta yaml.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
