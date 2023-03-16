@@ -1,5 +1,7 @@
 # obsidian-toggle-meta-yaml-plugin
 
+**Tips: The latest version of Obsidian already offers meta yaml folding feature.**
+
 This is a simple plugin to toggle meta yaml. 
 
 The plugin only implements one thing that show or hide meta yaml in you markdown.

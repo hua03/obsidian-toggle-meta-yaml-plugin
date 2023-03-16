@@ -1,4 +1,6 @@
-import { App, Plugin, PluginSettingTab, Setting } from "obsidian";
+import { App, Editor, MarkdownView, Plugin, PluginSettingTab, Setting } from "obsidian";
+import { Prec } from "@codemirror/state";
+import { EditorView } from "@codemirror/view";
 import { hideMetaYaml, showMetaYaml } from "./utils";
 
 interface PluginSettings {
@@ -22,9 +24,15 @@ export default class ToggleMetaYamlPlugin extends Plugin {
 			name: "toggle",
 			editorCallback: () => {
 				this.settings.show = !this.settings.show;
-				this.toggleMetaYaml();
+				this.refreshView();
 			},
 		});
+
+		this.registerEditorExtension([
+			Prec.highest(EditorView.domEventHandlers({
+				"keyup": this.onKeyup
+			}))
+		]);
 	}
 
 	onunload() {
@@ -42,7 +50,7 @@ export default class ToggleMetaYamlPlugin extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
-		this.toggleMetaYaml();
+		this.refreshView();
 	}
 
 	async reset() {
@@ -50,12 +58,85 @@ export default class ToggleMetaYamlPlugin extends Plugin {
 		await this.saveSettings();
 	}
 
-	toggleMetaYaml() {
+	refreshView() {
 		if (this.settings.show) {
 			showMetaYaml();
 		} else {
 			hideMetaYaml();
 		}
+	}
+
+	private readonly onKeyup = (event: KeyboardEvent, view: EditorView) => {
+		// 获取光标位置
+		const cursor = view.state.selection.asSingle().main;
+		const metaRange = this.getRangeOfMetaYaml(view)
+		const editor = this.getEditor()
+
+		// 起始位置和结束位置一致，说明没有yaml
+		if (metaRange.to === metaRange.from) return
+
+		if (event.key === 'ArrowDown') {
+			if (cursor.from <= metaRange.from) {
+				editor?.setCursor(metaRange.lineEnd + 1)
+			}
+		}
+	}
+
+	getRangeOfMetaYaml(view: EditorView) {
+		const editor = this.getEditor()
+		const range = { from: 0, to: 0, lineEnd: 0, lineStart: 0 }
+
+
+		if (editor) {
+			const lineCount = editor.lineCount()
+			const docs = []
+			const metaYaml = []
+			const metaYamlBoundaryMatch = /^-{3}$/
+
+			for (let i = 0; i < lineCount; i++) {
+				const string = editor.getLine(i)
+				// 是否存在起始标识
+				const hasStart = metaYaml.filter(v => string.match(metaYamlBoundaryMatch)).length === 1
+				// 是否存在结束标识
+				const hasEnd = metaYaml.filter(v => string.match(metaYamlBoundaryMatch)).length === 2
+
+				if (string.match(metaYamlBoundaryMatch)) {
+					// 存入起始标识
+					if (!metaYaml.length) {
+						const start = docs.join('').length + 1
+						range.from = start
+						range.lineStart = docs.length + 1
+						metaYaml.push(string)
+						// 存入结束标识
+					} else if (!hasEnd) {
+						metaYaml.push(string)
+						const end = range.from + metaYaml.join('').length
+						range.to = end
+						range.lineEnd = metaYaml.length + docs.length
+					} else {
+						docs.push(string)
+					}
+				} else {
+					if (hasStart && !hasEnd) {
+						metaYaml.push(string)
+					} else {
+						docs.push(string)
+					}
+				}
+			}
+		}
+
+		return range
+	}
+
+	getEditor = (): Editor | null => {
+		let editor = null;
+		let markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
+		if (markdownView) {
+			editor = markdownView.editor;
+		}
+		if (editor === null) console.log('can\'t get editor');
+		return editor;
 	}
 }
 
@@ -75,7 +156,7 @@ class ToggleMetaYamlSettingTab extends PluginSettingTab {
 			.setName("Show Meta Yaml")
 			.setDesc(
 				"If disable, markdown meta yaml will be hidden. It only work at live preview mode, preview mode don't support currently. " +
-					"Source mode don't need it."
+				"Source mode don't need it."
 			)
 			.addToggle((component) =>
 				component
@@ -87,3 +168,5 @@ class ToggleMetaYamlSettingTab extends PluginSettingTab {
 			);
 	}
 }
+
+

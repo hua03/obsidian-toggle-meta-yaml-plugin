@@ -1,4 +1,3 @@
 .toggle-meta-yaml--hide .cm-hmd-frontmatter {
-	visibility: hidden;
-	height: 0;
+	display: none;
 }
