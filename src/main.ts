@@ -95,28 +95,34 @@ export default class ToggleMetaYamlPlugin extends Plugin {
 
 			for (let i = 0; i < lineCount; i++) {
 				const string = editor.getLine(i)
+				const matchCount = metaYaml.filter(v => string.match(metaYamlBoundaryMatch)).length
+
 				// 是否存在起始标识
-				const hasStart = metaYaml.filter(v => string.match(metaYamlBoundaryMatch)).length === 1
+				const hasStart = matchCount === 1
 				// 是否存在结束标识
-				const hasEnd = metaYaml.filter(v => string.match(metaYamlBoundaryMatch)).length === 2
+				const hasEnd = matchCount === 2
 
 				if (string.match(metaYamlBoundaryMatch)) {
 					// 存入起始标识
 					if (!metaYaml.length) {
-						const start = docs.join('').length + 1
-						range.from = start
-						range.lineStart = docs.length + 1
+						const preDocLine = docs.length
+						const preDocCharCount = docs.join('').length
+
+						range.from = preDocCharCount ? preDocCharCount + 1 : 0
+						range.lineStart = preDocLine ? preDocLine + 1 : 0
 						metaYaml.push(string)
+
 						// 存入结束标识
 					} else if (!hasEnd) {
 						metaYaml.push(string)
-						const end = range.from + metaYaml.join('').length
-						range.to = end
-						range.lineEnd = metaYaml.length + docs.length
+						range.to = range.from + metaYaml.join('').length
+						range.lineEnd = docs.length + metaYaml.length
+
 					} else {
 						docs.push(string)
 					}
 				} else {
+					// 存在起始标识，不存在结束标识时，此时
 					if (hasStart && !hasEnd) {
 						metaYaml.push(string)
 					} else {
