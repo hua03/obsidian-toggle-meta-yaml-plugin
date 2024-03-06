@@ -1,7 +1,7 @@
 import { App, Editor, MarkdownView, Plugin, PluginSettingTab, Setting } from "obsidian";
 import { Prec } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
-import { hideMetaYaml, showMetaYaml } from "./utils";
+import { hideMetaYaml, showMetaYaml } from "./show-hide";
 
 interface PluginSettings {
 	show: boolean;
