@@ -1,7 +1,7 @@
 {
 	"name": "obsidian-toggle-meta-yaml-plugin",
-	"version": "1.2.0",
-	"description": "This is a simple plugin to toggle meta yaml.",
+	"version": "1.2.1",
+	"description": "This is a simple plugin to toggle visibility of meta YAML and in-document properties.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
