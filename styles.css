@@ -1,3 +1,9 @@
+/* In-document properties view */
 .toggle-meta-yaml--hide .metadata-container {
+	display: none !important;
+}
+
+/* Meta YAML */
+.toggle-meta-yaml--hide .cm-hmd-frontmatter {
 	display: none !important;
 }
