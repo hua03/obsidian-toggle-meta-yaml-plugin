@@ -1,9 +1,9 @@
 {
 	"id": "obsidian-toggle-meta-yaml-plugin",
-	"name": "Toggle Meta Yaml",
-	"version": "1.2.0",
+	"name": "Toggle Meta YAML and In-Document Properties",
+	"version": "1.2.1",
 	"minAppVersion": "0.15.0",
-	"description": "this is a simple plugin to toggle meta yaml.",
+	"description": "This is a simple plugin to toggle visibility of meta YAML and in-document properties.",
 	"author": "hua03",
 	"authorUrl": "https://github.com/hua03",
 	"isDesktopOnly": false

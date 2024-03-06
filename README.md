@@ -1,12 +1,5 @@
-# obsidian-toggle-meta-yaml-plugin
+# Obsidian Plugin to Toggle Meta YAML and In-Document Properties View
 
-**Tips: The latest version of Obsidian already offers meta yaml folding feature.**
+This plugin is simple: It gives you the ability to toggle visibility of meta YAML and in-document properties. For convenient switching, bind the command `Toggle Meta YAML: Toggle` to a hotkey, like: `Cmd + Shift + M`.
 
-This is a simple plugin to toggle meta yaml. 
-
-The plugin only implements one thing that show or hide meta yaml in you markdown.
-
-For convenient switching, you can bind the command `toggle-meta-yaml: toggle` to you hotkey, like `cmd+shift+m`.
-
-## License
-[toggle-meta-yaml](https://github.com/hua03/obsidian-toggle-meta-yaml-plugin) is licensed under MIT license. Refer to [LICENSE](Licence) for more information.
+**Tip:** The latest version of Obsidian already has an option to hide meta YAML and in-document properties. This plugin provides ability to swiftly and conveniently hide and show them with a hotkey.

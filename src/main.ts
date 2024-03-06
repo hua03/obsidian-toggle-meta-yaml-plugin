@@ -1,7 +1,7 @@
 import { App, Editor, MarkdownView, Plugin, PluginSettingTab, Setting } from "obsidian";
 import { Prec } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
-import { hideMetaYaml, showMetaYaml } from "./utils";
+import { hideMetaYaml, showMetaYaml } from "./show-hide";
 
 interface PluginSettings {
 	show: boolean;
@@ -15,13 +15,13 @@ export default class ToggleMetaYamlPlugin extends Plugin {
 	settings: PluginSettings;
 
 	async onload() {
-		console.log(`load ToggleMetaYaml Plugin`);
+		console.log(`Loading Toggle Meta YAML Plugin`);
 		await this.loadSettings();
 		this.addSettingTab(new ToggleMetaYamlSettingTab(this.app, this));
 
 		this.addCommand({
 			id: "obsidian-toggle-meta-yaml-toggle",
-			name: "toggle",
+			name: "Toggle",
 			editorCallback: () => {
 				this.settings.show = !this.settings.show;
 				this.refreshView();
@@ -135,7 +135,7 @@ export default class ToggleMetaYamlPlugin extends Plugin {
 		if (markdownView) {
 			editor = markdownView.editor;
 		}
-		if (editor === null) console.log('can\'t get editor');
+		if (editor === null) console.error('Can\'t get editor');
 		return editor;
 	}
 }
@@ -151,12 +151,11 @@ class ToggleMetaYamlSettingTab extends PluginSettingTab {
 	display(): void {
 		const { containerEl } = this;
 		containerEl.empty();
-		containerEl.createEl("h2", { text: "Toggle Meta Yaml Settings" });
+		containerEl.createEl("h2", { text: "Toggle Meta YAML Settings" });
 		new Setting(containerEl)
-			.setName("Show Meta Yaml")
+			.setName("Show meta YAML and in-document properties")
 			.setDesc(
-				"If disable, markdown meta yaml will be hidden. It only work at live preview mode, preview mode don't support currently. " +
-				"Source mode don't need it."
+				"If disabled, markdown meta YAML and in-document properties will be hidden."
 			)
 			.addToggle((component) =>
 				component
